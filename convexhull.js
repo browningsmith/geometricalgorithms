@@ -5,6 +5,9 @@ var ctx = null;
 //Create new binary search tree
 var bst = new BST();
 
+//Create pointer to linked list queue
+var queue = null;
+
 //Flag to say whether we are animating convex hull or not
 var animating = false;
 
@@ -69,6 +72,23 @@ function addPoint(event) {
     bst.insert(newPoint, newPoint.getX());
 
     drawAllPoints();
+}
+
+//Method to be performed when spacebar is pressed
+function animateHull(event) {
+
+    //If we are not attempting to animate the convex hull, print error message and return
+    if (animating == false) {
+    
+        console.error("Convex hull already computed. Try adding a new point");
+        return;
+	}
+}
+
+//Method to compute and draw next line on the upper hull
+function animateUpperHull() {
+
+    
 }
 
 //Execute this function when document is loaded

@@ -155,10 +155,13 @@ function BSTIterator(bst) {
 
 	//state variable, to determine what the iterator does next
 	// 0 means nothing has been checked
-	// 1 means left has been checked
-	// 2 means left and center have been checked
+	// 1 means left (right if reversed) has been checked
+	// 2 means left (right if reversed) and center have been checked
 	// 3 means all have been checked
 	this.state = 0;
+
+	//direction variable, to update state if reversing direction
+	this.directionRight = true;
 
 	//BSTIterator methods
 
@@ -339,4 +342,92 @@ function BSTIterator(bst) {
 			}
 		}
 	}
+
+	//Method to move to the previous node during reverse-order traversal. Goes to the right-most node if at root and state is 0
+	/*this.getPrevious = function () {
+	
+		//Infinite loop to traverse tree
+		while (true) {
+
+			//As long as the state is 0, meaning nothing has been checked, attempt to go right
+			while (this.state == 0) {
+		
+				//console.log("State is 0. Attempting to go right");
+				//Check to see if node has right child
+				if (this.hasRight()) {
+			
+					//console.log("Current node has right child, going right");
+					//If node has right child, traverse right
+					this.goRight();
+				}
+				else {
+			
+					//console.log("Current node no right child, setting state to 1");
+					//we have no right child, set state to 1 meaning right has been checked
+					this.state = 1;
+				}
+			}
+
+			//If the state is 1, meaning right has been checked, but not the center, return this node and set state to 2
+			if (this.state == 1) {
+			
+				//console.log("State is 1, returning current node and setting state to 2");
+				this.state = 2;
+				return this.node;
+			}
+
+			//As long as the state is 2, meaning right and center have been checked, attempt to go left
+			while (this.state == 2) {
+		
+				//console.log("State is 2. Attempting to go left");
+				//Check to see if node has a left child
+				if (this.hasLeft()) {
+			
+					//console.log("Current node has left child, going left. Resetting state to 0");
+					//If node has left child, reset state to 0 and go left
+					this.state = 0;
+
+					this.goLeft();
+				}
+
+				//If node has no left child, set state to 3 meaning all has been checked and we need to return to parent
+				else {
+				
+					//console.log("Current node has no left child. Setting state to 3");
+					this.state = 3;
+				}
+			}
+
+			//As long as the state is 3, meaning this node and everything below has been checked
+			// we need to return to the parent
+			while (this.state == 3) {
+
+				//console.log("State is 3. Attempting to return to parent");
+				//If we have no parent, then we are at the root. Return a null pointer
+				if (this.hasParent() == false) {
+				
+					//console.log("Current node has no parent. Returning a null pointer");
+					return null;
+				}
+			
+				//If we are the parent's right child, then set to state 1, meaning right was checked
+				if (this.node === this.node.getParent().getRight()) {
+				
+					//console.log("Current node is left child of parent. Setting state to 1");
+					this.state = 1;
+				}
+
+				//If we are the parent's left child, then set state to 3, meaning all was checked
+				else if (this.node === this.node.getParent().getLeft()) {
+				
+					//console.log("Current node is right child of parent. Setting state to 3");
+					this.state = 3;
+				}
+
+				//Go up to parent
+				//console.log("Moving up to parent");
+				this.node = this.node.getParent();
+			}
+		}
+	}*/
 }
