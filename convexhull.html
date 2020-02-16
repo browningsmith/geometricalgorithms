@@ -1,0 +1,31 @@
+<html>
+
+<head>
+
+	<title>Convex Hull</title>
+
+	<style type="text/css">
+
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="binarysearchtree/bstlibrary.js"></script>
+	<script src="linkedlistlibrary.js"></script>
+	<script src="convexhull.js"></script>
+</head>
+
+	<body>
+
+		<p>Click in the square below to add a point</p>
+
+		<canvas id="canvas" width="1000" height="500" onclick="addPoint(event)"></canvas>
+
+		<script type="text/javascript">
+
+			$(document).ready(whenReady());
+		</script>
+	</body>
+</html>

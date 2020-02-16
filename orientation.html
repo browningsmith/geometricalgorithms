@@ -1,0 +1,145 @@
+<html>
+
+	<head>
+
+		<title>Convex Hull</title>
+
+		<style type="text/css">
+
+			canvas {
+
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<p>Click in three spots in the block below to compute the orientation of three points</p>
+
+		<canvas id="canvas" width="1000" height="500" onclick="takePoint(event)"></canvas>
+
+		<p id="x1">x1: </p>
+		<p id="y1">y1: </p>
+		<p id="x2">x2: </p>
+		<p id="y2">y2: </p>
+		<p id="x3">x3: </p>
+		<p id="y3">y3: </p>
+		<p id="computation">computation: </p>
+		<p id="orientation">orientation: </p>
+
+		<script>
+
+			//Grab context of canvas
+			var canvas = document.getElementById("canvas");
+			var ctx = canvas.getContext("2d");
+
+			//Create arrays for x and y points
+			var xArray = [0.0, 0.0, 0.0];
+			var yArray = [0.0, 0.0, 0.0];
+
+			//Set flag for the index to input coordinates to index 0
+			var n = 0;
+
+			//Called on a click event to the canvas
+			function takePoint(event) {
+
+				handlePoint(event.offsetX, event.offsetY);
+			}
+
+			//Inputs coordinates into proper array area, moves context or draws, updates text readout
+			function handlePoint(x, y) {
+
+				//if n is less than or equal to 0.
+				if (n <= 0) {
+
+					//set it to 0
+					n = 0;
+
+					//Place new coordinates into proper array area
+					xArray[n] = x;
+					yArray[n] = canvas.height - y;
+
+					//Clear canvas and reset context?
+					ctx.clearRect(0,0, canvas.width, canvas.height);
+
+					//Reset and move context
+					ctx.beginPath();
+					ctx.moveTo(x, y);
+
+					//Update text display for x
+					var id = "x" + (n + 1);
+					var htmlstr = "" + id + ": " + xArray[n];
+
+					document.getElementById(id).innerHTML = htmlstr;
+
+					//Update text display for y
+					var id = "y" + (n + 1);
+					var htmlstr = "" + id + ": " + yArray[n];
+
+					document.getElementById(id).innerHTML = htmlstr;
+
+					//Increment n
+					n++;
+				}
+
+				else {
+
+					//Place new coordinates into proper array area
+					xArray[n] = x;
+					yArray[n] = canvas.height - y;
+
+					//Draw line to this new point
+					ctx.lineTo(x, y);
+					ctx.stroke();
+
+					//Update text display for x
+					var id = "x" + (n + 1);
+					var htmlstr = "" + id + ": " + xArray[n];
+
+					document.getElementById(id).innerHTML = htmlstr;
+
+					//Update text display for y
+					var id = "y" + (n + 1);
+					var htmlstr = "" + id + ": " + yArray[n];
+
+					document.getElementById(id).innerHTML = htmlstr;
+
+					//Increment n
+					n++;
+				}
+
+				//If n is greater than 2, compute the orientation
+				if (n > 2) {
+
+					var computation = ((yArray[1] - yArray[0]) * (xArray[2] - xArray[1])) - ((yArray[2] - yArray[1]) * (xArray[1] - xArray[0]));
+
+					//Update text display for computation
+					document.getElementById("computation").innerHTML = ("computation: " + computation);
+
+					//Update text display for orientation
+					var orientation;
+
+				if (computation < 0) {
+
+					orientation = "counter-clockwise";
+				}
+				else if (computation > 0) {
+
+					orientation = "clockwise";
+				}
+				else {
+
+					orientation = "colinear";
+				}
+
+				document.getElementById("orientation").innerHTML = ("orientation: " + orientation);
+
+				//reset n to 0
+				n = 0;
+			}
+		}
+		</script>
+
+	</body>
+</html>

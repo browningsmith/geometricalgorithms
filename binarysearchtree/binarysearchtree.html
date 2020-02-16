@@ -1,0 +1,29 @@
+<html>
+
+<head>
+
+    <title>Binary Search Tree</title>
+
+    <style type="text/css">
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="bstlibrary.js"></script>
+    <script src="binarysearchtree.js"></script>
+</head>
+
+    <body>
+
+        <p>Click anywhere in the box to add a new point to the BST, sorted by x coordinate</p>
+        <canvas id="canvas" width="1000" height="1000" onmousemove="addPoint(event)"></canvas>
+
+        <script>
+
+            $(document).ready(whenReady());
+        </script>
+    </body>
+</html>
