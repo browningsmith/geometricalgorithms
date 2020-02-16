@@ -31,6 +31,12 @@ function LinkedNode(content) {
 		return this.next;
 	}
 
+	//Method to set next node
+	this.setNext = function (nextNode) {
+	
+		this.next = nextNode;
+	}
+
 	//Method to get the content
 	this.getContent = function () {
 	
