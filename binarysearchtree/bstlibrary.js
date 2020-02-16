@@ -161,7 +161,7 @@ function BSTIterator(bst) {
 	this.state = 0;
 
 	//direction variable, to update state if reversing direction
-	this.directionRight = true;
+	this.reversed = false;
 
 	//BSTIterator methods
 

@@ -5,6 +5,9 @@ var ctx = null;
 //Create new binary search tree
 var bst = new BST();
 
+//Create pointer to BSTIterator();
+var iterator = null;
+
 //Create pointer to linked list queue
 var queue = null;
 
@@ -34,7 +37,7 @@ function drawAllPoints() {
     ctx = canvas.getContext("2d");
 
     //Create a new iterator for the bst
-    var iterator = new BSTIterator(bst);
+    iterator = new BSTIterator(bst);
 
     var nextNode;
     //console.log("Attempting to draw point:\n");
@@ -72,6 +75,9 @@ function addPoint(event) {
     bst.insert(newPoint, newPoint.getX());
 
     drawAllPoints();
+
+    //Reset iterator
+    iterator = new BSTIterator(bst);
 }
 
 //Method to be performed when spacebar is pressed
@@ -83,10 +89,6 @@ function animateHull(event) {
         console.error("Convex hull already computed. Try adding a new point");
         return;
 	}
-}
-
-//Method to compute and draw next line on the upper hull
-function animateUpperHull() {
 
     
 }
