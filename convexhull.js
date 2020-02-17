@@ -14,6 +14,9 @@ var hullIterator = null;
 //Create pointer to linked list for upper hull
 var upperHull = null;
 
+//Flag to indicate whether mouse button is down or up
+var mouseDown = false;
+
 //Flag to say whether we are checking upper hull, or adding a new Point
 var checkingUpperHull = true;
 
@@ -94,18 +97,23 @@ function drawHull(hull) {
     ctx.stroke();
 }
 
+//Method to be performed when mouse button is clicked down
+function setMouseDown(status) {
+
+    mouseDown = status;
+}
+
 //Method to be performed when a new point is added
 function addPoint(event) {
 
-	//If we are attempting to animate the convex hull, print error message and return
-	if (animating) {
-	
-		console.error("Unable to add new point, convex hull not computed.");
+    //If the mouse button is not down, don't do anything
+    if (mouseDown == false) {
+    
         return;
 	}
 
     //Change instructions
-    document.getElementById("instructions").innerHTML = "Now press any key on the keyboard to watch the convex hull be constructed.";
+    document.getElementById("instructions").innerHTML = "Now the convex hull be constructed.";
 
 	//Set animating to true
 	animating = true;
@@ -126,13 +134,13 @@ function addPoint(event) {
     drawAllPoints();
 }
 
-//Method to be performed when key is pressed
+//Method to be performed when mouse is not being dragged
 function animateHull(event) {
 
     //If we are not attempting to animate the convex hull, print error message and return
     if (animating == false) {
     
-        console.error("Convex hull already computed. Try adding a new point");
+        //console.log("Convex hull already computed. Try adding a new point");
         return;
 	}
 
@@ -161,7 +169,7 @@ function animateHull(event) {
       
             //otherwise set checkingUpperHull to false and set animating to false
 
-            document.getElementById("instructions").innerHTML = "Upper Hull completed. Click to add a new point.";
+            document.getElementById("instructions").innerHTML = "Upper Hull completed. Click and drag to add new points.";
             console.log("No more points to add to upper hull. Setting checking to false and animating to false");
             checkingUpperHull = false;
             animating = false;
@@ -177,14 +185,48 @@ function animateHull(event) {
 //Method to add new point to upperHull queue
 function addToUpperHull() {
 
-    var newPointToAdd = hullIterator.getNext(); //Get the next BST node
+    var newPointToAdd;
 
-    //if newPointToAdd is null, set animating to false and return
-    if (newPointToAdd === null) {
+    //Attempt to grab a new point if the ones found are exactly the same
+    while (true) {
+
+        console.log("Grabbing a new point");
+        newPointToAdd = hullIterator.getNext(); //Get the next BST node
+
+        //if newPointToAdd is null, set animating to false and return
+        if (newPointToAdd === null) {
     
-        console.log("No more points to add");
-        return false; //return false if unable to add more points
-	}
+            console.log("No more points to add");
+            return false; //return false if unable to add more points
+	    }
+
+        //If newPointToAdd is a duplicate of upperHull, don't add it, continue the loop
+        
+        //First, check that there is an element on the upperHull
+        if (upperHull !== null) {
+        
+            if (newPointToAdd.getContent().getX() == upperHull.getContent().getContent().getX()) {
+      
+                if (newPointToAdd.getContent().getY() == upperHull.getContent().getContent().getY()) {
+       
+                    console.warn("Found duplicate point. disregarding and attempting to add a new point.");
+                    continue;
+			    }
+                else { //New point has different y values, no duplicate exists
+        
+                    break;
+				}
+		    }
+            else { // New point has different x values, no duplicate exists
+       
+                break;
+			}
+        }
+        else { //No element on upper hull, so no duplicate exists
+      
+            break;
+		}
+    }
 
     //Push new point on to the linked list queue
     var oldUpperHull = upperHull; //Grab the front of the queue
@@ -248,6 +290,15 @@ function checkUpperHull() {
     //If the orientation is positive or colinear, accept point2 and proceed
     else {
     
+        //If the orientation is colinear, check if points 1 and 3 have the same x values
+        if (orientation == 0) {
+    
+            if (point1.getContent().getContent().getX() == point3.getContent().getContent().getX()) {
+      
+                console.error("Colinear Vertical Points Detected!");
+		    }
+	    }
+        
         console.log("Orientation determined to be clockwise. Keeping point2. Finishing check, setting checking flag to false");
         checkingUpperHull = false;
 	}
@@ -264,4 +315,6 @@ function whenReady() {
 
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
+
+    setInterval(animateHull, 1);
 }

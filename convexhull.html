@@ -17,11 +17,11 @@
 	<script src="convexhull.js"></script>
 </head>
 
-	<body onkeyup="animateHull(event)">
+	<body>
 
-		<p id="instructions">Click in the square below to add a point</p>
+		<p id="instructions">Click and drag in the square below to add points</p>
 
-		<canvas id="canvas" width="1000" height="500" onclick="addPoint(event)"></canvas>
+		<canvas id="canvas" width="1000" height="500" onmousemove="addPoint(event)" onmousedown="setMouseDown(true)" onmouseup="setMouseDown(false)" onmouseleave="setMouseDown(false)"></canvas>
 
 		<script type="text/javascript">
 
